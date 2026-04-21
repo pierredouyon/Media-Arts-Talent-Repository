@@ -64,12 +64,12 @@ export default function HomePage() {
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-[0.9] tracking-tight mb-6">
               Connect with the{" "}
               <span className="text-[#E50914]">creative pulse</span>{" "}
-              of Windsor
+              through the Media Arts Talent Repository (MATR).
             </h1>
 
             <p className="text-white/60 text-lg md:text-xl max-w-2xl leading-relaxed mb-10">
-              Discover Windsor's most talented photographers, filmmakers, musicians, designers, and creative professionals.
-              The definitive directory for the region's media arts community.
+              Discover talented photographers, filmmakers, musicians, designers, and creative professionals.
+              Join our directory for the media arts community.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
