@@ -3,47 +3,50 @@ import { ArrowUpRight, Briefcase, Megaphone, Users } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-white pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* CTA panel */}
-        <div className="matr-dark-panel matr-grid matr-ring mb-12 overflow-hidden">
-          <div className="absolute inset-y-0 right-0 hidden w-72 bg-[radial-gradient(circle_at_center,rgba(229,9,20,0.18),transparent_70%)] lg:block pointer-events-none" />
-          <div className="relative z-10 flex flex-col gap-6 p-6 md:p-8 lg:flex-row lg:items-center lg:justify-between">
+    <footer className="bg-[#080808] text-white pt-14 pb-8">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+
+        {/* CTA panel — liquid glass dark */}
+        <div
+          className="matr-dark-panel matr-grid matr-ring mb-12 overflow-hidden"
+        >
+          <div className="absolute inset-y-0 right-0 hidden w-80 bg-[radial-gradient(ellipse_at_center,rgba(229,9,20,0.16),transparent_70%)] lg:block pointer-events-none" />
+          <div className="relative z-10 flex flex-col gap-5 p-6 md:p-8 lg:flex-row lg:items-center lg:justify-between">
             <div className="lg:max-w-md">
-              <p className="mb-2 text-xs uppercase tracking-[0.28em] text-white/40">Creative Network</p>
-              <h3 className="text-2xl md:text-3xl font-black text-white mb-2 leading-tight">
+              <p className="mb-1.5 text-[10px] uppercase tracking-[0.28em] text-white/36">Creative Network</p>
+              <h3 className="text-xl md:text-2xl font-black text-white mb-2 leading-tight">
                 Make every next step obvious.
               </h3>
-              <p className="text-sm text-gray-400 leading-relaxed">
+              <p className="text-[13px] text-white/45 leading-relaxed">
                 Explore talent, post a role, promote a project, or upgrade a membership without hitting a dead end.
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3 lg:shrink-0">
+            <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-2.5 lg:shrink-0">
               <Link href="/explore">
-                <span className="flex h-12 w-full sm:w-auto items-center justify-between gap-3 rounded-2xl bg-[#E50914] px-5 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(229,9,20,0.24)] transition-colors hover:bg-[#b40710] cursor-pointer">
+                <span className="flex h-10 w-full sm:w-auto items-center justify-between gap-3 rounded-full bg-[#E50914] px-5 text-[13px] font-semibold text-white shadow-[0_4px_16px_rgba(229,9,20,0.30)] transition-all hover:bg-[#c8060f] hover:shadow-[0_6px_24px_rgba(229,9,20,0.42)] cursor-pointer">
                   <span className="flex items-center gap-2">
-                    <Users size={15} />
+                    <Users size={14} />
                     Browse Talent
                   </span>
-                  <ArrowUpRight size={13} />
+                  <ArrowUpRight size={12} />
                 </span>
               </Link>
               <Link href="/jobs">
-                <span className="flex h-12 w-full sm:w-auto items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/[0.04] px-5 text-sm font-semibold text-white transition-colors hover:bg-white/8 cursor-pointer">
+                <span className="flex h-10 w-full sm:w-auto items-center justify-between gap-3 rounded-full border border-white/12 bg-white/[0.05] px-5 text-[13px] font-semibold text-white/85 transition-all hover:bg-white/10 cursor-pointer">
                   <span className="flex items-center gap-2">
-                    <Briefcase size={15} />
+                    <Briefcase size={14} />
                     Browse Jobs
                   </span>
-                  <ArrowUpRight size={13} />
+                  <ArrowUpRight size={12} />
                 </span>
               </Link>
               <Link href="/advertise">
-                <span className="flex h-12 w-full sm:w-auto items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/[0.04] px-5 text-sm font-semibold text-white transition-colors hover:bg-white/8 cursor-pointer">
+                <span className="flex h-10 w-full sm:w-auto items-center justify-between gap-3 rounded-full border border-white/12 bg-white/[0.05] px-5 text-[13px] font-semibold text-white/85 transition-all hover:bg-white/10 cursor-pointer">
                   <span className="flex items-center gap-2">
-                    <Megaphone size={15} />
+                    <Megaphone size={14} />
                     Advertise
                   </span>
-                  <ArrowUpRight size={13} />
+                  <ArrowUpRight size={12} />
                 </span>
               </Link>
             </div>
@@ -52,15 +55,15 @@ export default function Footer() {
 
         {/* Footer columns */}
         <div className="mb-10 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
-          {/* Brand column — full width on mobile */}
+          {/* Brand */}
           <div className="col-span-2 sm:col-span-3 lg:col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-[0.8rem] bg-[#E50914] shadow-[0_8px_18px_rgba(229,9,20,0.22)]">
-                <span className="text-white font-black text-xs">M</span>
+              <div className="flex h-7 w-7 items-center justify-center rounded-[0.7rem] bg-[#E50914] shadow-[0_4px_14px_rgba(229,9,20,0.30)]">
+                <span className="text-white font-black text-[11px]">M</span>
               </div>
-              <span className="font-black text-white text-base tracking-tight">MATR</span>
+              <span className="font-black text-white text-[15px] tracking-tight">MATR</span>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
+            <p className="text-white/40 text-[13px] leading-relaxed max-w-xs">
               Media Arts Talent Repository — a creative directory for talent, production teams, and local hiring.
             </p>
           </div>
@@ -101,14 +104,14 @@ export default function Footer() {
             },
           ].map((col) => (
             <div key={col.heading}>
-              <h4 className="font-semibold text-xs uppercase tracking-wider text-gray-400 mb-4">
+              <h4 className="font-bold text-[10px] uppercase tracking-[0.22em] text-white/30 mb-4">
                 {col.heading}
               </h4>
               <ul className="space-y-2.5">
                 {col.links.map((link) => (
                   <li key={link.href}>
                     <Link href={link.href}>
-                      <span className="text-gray-500 hover:text-white text-sm transition-colors cursor-pointer">
+                      <span className="text-white/50 hover:text-white text-[13px] transition-colors cursor-pointer">
                         {link.label}
                       </span>
                     </Link>
@@ -120,11 +123,11 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-gray-500 text-sm text-center sm:text-left">
+        <div className="border-t border-white/6 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-white/28 text-[12px] text-center sm:text-left">
             &copy; {new Date().getFullYear()} Media Arts Talent Repository. All rights reserved.
           </p>
-          <p className="text-gray-600 text-xs">
+          <p className="text-white/20 text-[11px]">
             Windsor, Ontario, Canada
           </p>
         </div>
