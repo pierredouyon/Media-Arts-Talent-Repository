@@ -32,7 +32,15 @@ router.get("/jobs", async (req, res): Promise<void> => {
 
   const { page, limit, search, city, category } = query.data;
   const offset = ((page ?? 1) - 1) * (limit ?? 10);
-  const conditions: ReturnType<typeof eq>[] = [eq(jobsTable.status, "active")];
+  const statusFilter = typeof req.query.status === "string" ? req.query.status : undefined;
+  const includeAll = req.query.scope === "all";
+  const conditions: ReturnType<typeof eq>[] = [];
+
+  if (!includeAll) {
+    conditions.push(eq(jobsTable.status, "active"));
+  } else if (statusFilter === "active" || statusFilter === "draft" || statusFilter === "expired") {
+    conditions.push(eq(jobsTable.status, statusFilter));
+  }
 
   if (search) {
     conditions.push(
@@ -42,7 +50,7 @@ router.get("/jobs", async (req, res): Promise<void> => {
   if (city) conditions.push(ilike(jobsTable.city, `%${city}%`) as ReturnType<typeof eq>);
   if (category) conditions.push(eq(jobsTable.category, category) as ReturnType<typeof eq>);
 
-  const whereClause = and(...conditions);
+  const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
   const jobs = await db
     .select()

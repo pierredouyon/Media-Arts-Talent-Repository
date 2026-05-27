@@ -1,6 +1,6 @@
 import { useRoute, Link } from "wouter";
 import { motion } from "framer-motion";
-import { MapPin, Globe, Instagram, Twitter, Linkedin, ArrowLeft, Star, Mail } from "lucide-react";
+import { MapPin, Globe, Instagram, Twitter, Linkedin, ArrowLeft, Star, Mail, Briefcase, Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useGetTalent, getGetTalentQueryKey } from "@workspace/api-client-react";
@@ -37,12 +37,21 @@ export default function TalentProfilePage() {
 
   if (!talent) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
+      <div className="min-h-screen bg-white flex items-center justify-center px-4">
+        <div className="max-w-xl rounded-[2rem] border border-gray-200 bg-[#F5F5F5] p-10 text-center">
+          <p className="text-xs uppercase tracking-[0.24em] text-[#E50914] mb-3">Profile Unavailable</p>
           <h1 className="text-4xl font-black text-black mb-4">Talent Not Found</h1>
-          <Link href="/explore">
-            <Button className="bg-[#E50914] hover:bg-[#b40710] text-white">Back to Explore</Button>
-          </Link>
+          <p className="text-gray-500 mb-6">
+            This profile may have been removed or the link may be outdated. Keep moving by returning to the directory or opening current opportunities.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Link href="/explore">
+              <Button className="bg-[#E50914] hover:bg-[#b40710] text-white">Back to Explore</Button>
+            </Link>
+            <Link href="/jobs">
+              <Button variant="outline">Browse Jobs</Button>
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -50,6 +59,7 @@ export default function TalentProfilePage() {
 
   const initials = `${talent.firstName[0] ?? ""}${talent.lastName[0] ?? ""}`.toUpperCase();
   const isPriority = talent.planName === "Gold" || talent.planName === "Gold Business" || talent.planName === "Platinum Business";
+  const hasContactLinks = Boolean(talent.website || talent.instagram || talent.twitter || talent.linkedin);
 
   return (
     <div className="min-h-screen bg-[#F5F5F5]">
@@ -148,9 +158,17 @@ export default function TalentProfilePage() {
               </div>
             )}
 
-            {talent.media && talent.media.length > 0 && (
-              <div className="bg-white rounded-2xl border border-gray-200 p-6">
-                <h2 className="font-bold text-black text-lg mb-4">Portfolio</h2>
+            <div className="bg-white rounded-2xl border border-gray-200 p-6">
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <h2 className="font-bold text-black text-lg">Portfolio</h2>
+                {talent.media && talent.media.length > 0 && (
+                  <span className="text-xs uppercase tracking-[0.2em] text-gray-400">
+                    {talent.media.length} item{talent.media.length !== 1 ? "s" : ""}
+                  </span>
+                )}
+              </div>
+
+              {talent.media && talent.media.length > 0 ? (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {talent.media.map((item, i) => (
                     <motion.div
@@ -175,8 +193,23 @@ export default function TalentProfilePage() {
                     </motion.div>
                   ))}
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="rounded-2xl border border-dashed border-gray-200 bg-gray-50 p-6">
+                  <p className="text-black font-semibold mb-1">Portfolio updates coming soon</p>
+                  <p className="text-sm text-gray-500 mb-4">
+                    This profile is active in the directory, but media samples have not been added yet.
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <Link href="/explore">
+                      <Button variant="outline" className="rounded-xl">Discover More Talent</Button>
+                    </Link>
+                    <Link href="/jobs">
+                      <Button className="rounded-xl bg-[#E50914] hover:bg-[#b40710] text-white">Browse Jobs</Button>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="space-y-4">
@@ -241,6 +274,39 @@ export default function TalentProfilePage() {
                     </div>
                   </a>
                 )}
+                {!hasContactLinks && (
+                  <p className="text-sm text-gray-500">
+                    Public social links have not been added yet. Use the job board or directory to keep moving.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="bg-black rounded-2xl p-5 text-white">
+              <p className="text-xs uppercase tracking-[0.22em] text-white/45 mb-2">Next Step</p>
+              <h3 className="font-black text-xl mb-2">Ready to work together?</h3>
+              <p className="text-sm text-white/65 mb-5">
+                Use MATR to post a role, review more profiles, or compare current opportunities before you reach out.
+              </p>
+              <div className="space-y-2">
+                <Link href="/post-job">
+                  <Button className="w-full rounded-xl bg-[#E50914] hover:bg-[#b40710] text-white gap-2">
+                    <Briefcase size={15} />
+                    Post a Job
+                  </Button>
+                </Link>
+                <Link href="/jobs">
+                  <Button variant="outline" className="w-full rounded-xl border-white/15 bg-transparent text-white hover:bg-white/10 gap-2">
+                    <Mail size={15} />
+                    Browse Jobs
+                  </Button>
+                </Link>
+                <Link href="/explore">
+                  <Button variant="outline" className="w-full rounded-xl border-white/15 bg-transparent text-white hover:bg-white/10 gap-2">
+                    <Compass size={15} />
+                    Discover More Talent
+                  </Button>
+                </Link>
               </div>
             </div>
 

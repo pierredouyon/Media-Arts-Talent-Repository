@@ -30,7 +30,7 @@ router.get("/stats/overview", async (_req, res): Promise<void> => {
     friend: 25,
     bronze: 50,
     silver: 100,
-    gold: 150,
+    gold: 250,
     "gold-business": 500,
     "platinum-business": 1000,
   };
@@ -40,7 +40,7 @@ router.get("/stats/overview", async (_req, res): Promise<void> => {
     .from(subscriptionsTable)
     .where(eq(subscriptionsTable.status, "active"));
 
-  const totalRevenue = subscriptions.reduce((sum, s) => {
+  const totalRevenue = subscriptions.reduce((sum: number, s: { planSlug: string }) => {
     return sum + (planRevenue[s.planSlug] ?? 0);
   }, 0);
 
@@ -90,7 +90,7 @@ router.get("/stats/membership-distribution", async (_req, res): Promise<void> =>
     friend: 25,
     bronze: 50,
     silver: 100,
-    gold: 150,
+    gold: 250,
     "gold-business": 500,
     "platinum-business": 1000,
   };

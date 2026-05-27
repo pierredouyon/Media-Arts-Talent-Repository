@@ -1,0 +1,184 @@
+import { useState } from "react";
+import { Link } from "wouter";
+import { motion } from "framer-motion";
+import { Search, Briefcase, MapPin, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useListJobs, getListJobsQueryKey } from "@workspace/api-client-react";
+
+const CATEGORIES = [
+  "Photography", "Film & Video", "Music", "Graphic Design", "Voice Acting",
+  "Acting & Performance", "Modeling", "Production", "Sound Engineering",
+  "Animation", "Writing & Content",
+];
+const CITIES = ["Windsor", "Tecumseh", "LaSalle", "Amherstburg", "Essex", "Leamington"];
+
+export default function JobsPage() {
+  const [search, setSearch] = useState("");
+  const [city, setCity] = useState("");
+  const [category, setCategory] = useState("");
+  const [page, setPage] = useState(1);
+
+  const params: Record<string, string | number> = { page, limit: 10 };
+  if (search) params.search = search;
+  if (city) params.city = city;
+  if (category) params.category = category;
+
+  const { data, isLoading } = useListJobs(params, {
+    query: { queryKey: getListJobsQueryKey(params) },
+  });
+
+  return (
+    <div className="min-h-screen bg-[#F5F5F5]">
+      <div className="bg-black text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-4xl md:text-6xl font-black mb-4"
+              >
+                Job Board
+              </motion.h1>
+              <p className="text-white/50 text-lg">
+                Creative opportunities in Windsor and surrounding areas
+              </p>
+            </div>
+            <Link href="/post-job">
+              <Button
+                className="flex-shrink-0 bg-[#E50914] hover:bg-[#b40710] text-white font-bold px-6 h-11 rounded-xl"
+                data-testid="button-post-job"
+              >
+                Post a Job
+                <ArrowRight size={16} className="ml-2" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-white rounded-2xl border border-gray-200 p-5 mb-6 shadow-sm">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="relative md:col-span-1">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+              <Input
+                value={search}
+                onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                placeholder="Search jobs..."
+                className="pl-10 h-11 rounded-xl border-gray-200"
+                data-testid="input-job-search"
+              />
+            </div>
+            <Select value={category} onValueChange={(v) => { setCategory(v === "all" ? "" : v); setPage(1); }}>
+              <SelectTrigger className="h-11 rounded-xl border-gray-200" data-testid="select-job-category">
+                <SelectValue placeholder="Category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+                {CATEGORIES.map((c) => (
+                  <SelectItem key={c} value={c}>{c}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={city} onValueChange={(v) => { setCity(v === "all" ? "" : v); setPage(1); }}>
+              <SelectTrigger className="h-11 rounded-xl border-gray-200" data-testid="select-job-city">
+                <SelectValue placeholder="City" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Cities</SelectItem>
+                {CITIES.map((c) => (
+                  <SelectItem key={c} value={c}>{c}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {isLoading ? (
+          <div className="space-y-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-28 bg-white rounded-2xl animate-pulse" />
+            ))}
+          </div>
+        ) : data?.jobs && data.jobs.length > 0 ? (
+          <>
+            <p className="text-gray-500 text-sm mb-4" data-testid="text-jobs-count">
+              {data.total} job{data.total !== 1 ? "s" : ""} available
+            </p>
+            <div className="space-y-4">
+              {data.jobs.map((job, i) => (
+                <motion.div
+                  key={job.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="bg-white rounded-2xl border border-gray-200 p-6 hover:border-gray-300 hover:shadow-md transition-all"
+                  data-testid={`card-job-${job.id}`}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-start gap-3 mb-2">
+                        <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center flex-shrink-0">
+                          <Briefcase size={16} className="text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-black text-lg" data-testid={`text-job-title-${job.id}`}>
+                            {job.title}
+                          </h3>
+                          <p className="text-gray-500 text-sm">{job.company}</p>
+                        </div>
+                      </div>
+                      <p className="text-gray-600 text-sm leading-relaxed mt-3 line-clamp-2">
+                        {job.description}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-3 mt-4">
+                        <div className="flex items-center gap-1 text-gray-400 text-xs">
+                          <MapPin size={12} />
+                          <span>{job.city}, {job.province}</span>
+                        </div>
+                        <span className="text-xs bg-[#E50914]/10 text-[#E50914] px-2.5 py-1 rounded-full font-semibold">
+                          {job.category}
+                        </span>
+                        {job.compensation && (
+                          <span className="text-xs bg-green-50 text-green-700 px-2.5 py-1 rounded-full font-medium">
+                            {job.compensation}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <a href={`mailto:${job.contactEmail}`}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex-shrink-0 rounded-xl"
+                        data-testid={`button-apply-${job.id}`}
+                      >
+                        Apply
+                      </Button>
+                    </a>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-20">
+            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 border border-gray-200">
+              <Briefcase size={28} className="text-gray-400" />
+            </div>
+            <h3 className="text-xl font-bold text-black mb-2">No jobs posted yet</h3>
+            <p className="text-gray-500 mb-6">Be the first to post a creative opportunity.</p>
+            <Link href="/post-job">
+              <Button className="bg-[#E50914] hover:bg-[#b40710] text-white font-semibold rounded-xl" data-testid="button-first-job">
+                Post a Job
+              </Button>
+            </Link>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
