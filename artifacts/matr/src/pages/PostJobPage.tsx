@@ -59,15 +59,8 @@ export default function PostJobPage() {
       setLocation(buildAuthHref("/sign-in", { redirectTo: "/post-job" }));
       return;
     }
-
     try {
-      await createJob.mutateAsync({
-        data: {
-          ...form,
-          userId: user.id,
-          paypalOrderId: `JOB-${Date.now()}`,
-        },
-      });
+      await createJob.mutateAsync({ data: { ...form, userId: user.id, paypalOrderId: `JOB-${Date.now()}` } });
       toast({ title: "Job posted successfully", description: "Your listing is now live and visible on the job board." });
       setLocation("/dashboard?success=job-posted");
     } catch {
@@ -76,49 +69,65 @@ export default function PostJobPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5]">
-      <div className="bg-black text-white py-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3 mb-4">
-            <Briefcase className="text-[#E50914]" size={28} />
-            <h1 className="text-4xl font-black">Post a Job</h1>
+    <div className="min-h-screen bg-[#f2f0ec]">
+
+      {/* ── HERO ── */}
+      <div className="bg-[#080808] text-white py-14 lg:py-18">
+        <div className="max-w-5xl mx-auto px-5 sm:px-8 lg:px-10">
+          <div className="flex items-center gap-3 mb-5">
+            <Briefcase className="text-[#E50914]" size={22} />
+            <span className="matr-dark-kicker inline-flex">Hiring</span>
           </div>
-          <p className="text-white/50 text-lg max-w-2xl">
+          <h1 className="text-3xl md:text-5xl font-black mb-3 leading-tight">Post a Job</h1>
+          <p className="text-white/50 text-[15px] max-w-xl">
             Reach the MATR talent community with a role that is structured clearly and ready for applicants to act on.
           </p>
-          <div className="grid gap-3 sm:grid-cols-3 mt-8">
+          <div className="grid gap-3 sm:grid-cols-3 mt-8 max-w-2xl">
             {[
               { icon: Users, value: "Targeted", label: "Creative audience" },
               { icon: MapPin, value: "Local", label: "City-based discovery" },
               { icon: ClipboardList, value: "$100", label: "2 months live" },
             ].map((item) => (
-              <div key={item.label} className="rounded-2xl border border-white/10 bg-white/6 p-4">
-                <item.icon size={16} className="text-[#E50914] mb-3" />
-                <p className="text-2xl font-black text-white">{item.value}</p>
-                <p className="text-xs uppercase tracking-[0.18em] text-white/35 mt-1">{item.label}</p>
+              <div
+                key={item.label}
+                className="rounded-2xl p-4"
+                style={{
+                  background: "rgba(255,255,255,0.06)",
+                  backdropFilter: "blur(24px)",
+                  WebkitBackdropFilter: "blur(24px)",
+                  border: "1px solid rgba(255,255,255,0.09)",
+                  boxShadow: "0 1px 0 rgba(255,255,255,0.07) inset",
+                }}
+              >
+                <item.icon size={15} className="text-[#E50914] mb-2.5" />
+                <p className="text-xl font-black text-white leading-tight">{item.value}</p>
+                <p className="text-[10px] uppercase tracking-[0.18em] text-white/32 mt-1">{item.label}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-5xl mx-auto px-5 sm:px-8 lg:px-10 py-10">
+
+        {/* Not signed in */}
         {!isLoading && !isAuthenticated ? (
-          <div className="bg-white rounded-2xl border border-gray-200 p-10 text-center">
-            <p className="text-gray-500 mb-6">Sign in first to post a job to the directory.</p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
+          <div className="matr-premium-card p-10 text-center">
+            <Briefcase size={32} className="text-[#E50914] mx-auto mb-4 relative z-10" />
+            <h2 className="relative z-10 text-xl font-black text-[#0a0a0a] mb-2">Sign in to post a job</h2>
+            <p className="relative z-10 text-gray-500 text-[14px] mb-7">Sign in first to post a job to the directory.</p>
+            <div className="relative z-10 flex flex-wrap items-center justify-center gap-3">
               <Link href={buildAuthHref("/sign-in", { redirectTo: "/post-job" })}>
-                <Button className="bg-[#E50914] hover:bg-[#b40710] text-white font-semibold rounded-xl">
-                  Sign In
-                </Button>
+                <Button className="bg-[#E50914] hover:bg-[#c8060f] text-white font-semibold rounded-full h-10 px-6 shadow-[0_4px_16px_rgba(229,9,20,0.28)]">Sign In</Button>
               </Link>
               <Link href={buildAuthHref("/sign-up", { redirectTo: "/post-job" })}>
-                <Button variant="outline" className="rounded-xl">Create Account</Button>
+                <Button variant="outline" className="rounded-full border-black/10 text-gray-700 h-10 px-6">Create Account</Button>
               </Link>
             </div>
           </div>
         ) : (
           <>
+            {/* Step indicators */}
             <div className="grid md:grid-cols-2 gap-3 mb-8">
               {STEPS.map((item, index) => {
                 const active = step === item.id;
@@ -126,147 +135,123 @@ export default function PostJobPage() {
                 return (
                   <div
                     key={item.id}
-                    className={active
-                      ? "rounded-2xl border border-black bg-black p-4 text-white"
-                      : complete
-                        ? "rounded-2xl border border-[#E50914]/20 bg-[#E50914]/5 p-4 text-black"
-                        : "rounded-2xl border border-gray-200 bg-white p-4 text-gray-500"}
+                    className="rounded-2xl p-4 transition-all"
+                    style={
+                      active
+                        ? { background: "linear-gradient(160deg, #0f0f12, #0a0a0a)", border: "1px solid rgba(255,255,255,0.09)", color: "white" }
+                        : complete
+                          ? { background: "rgba(229,9,20,0.06)", border: "1px solid rgba(229,9,20,0.16)", color: "#0a0a0a" }
+                          : { background: "rgba(255,255,255,0.70)", border: "1px solid rgba(0,0,0,0.07)", color: "#9ca3af" }
+                    }
                   >
-                    <p className="text-xs uppercase tracking-[0.2em] mb-1">{`Step ${index + 1}`}</p>
-                    <p className="font-semibold">{item.label}</p>
+                    <p className="text-[10px] uppercase tracking-[0.2em] mb-1 opacity-60">{`Step ${index + 1}`}</p>
+                    <p className="font-semibold text-[14px]">{item.label}</p>
                   </div>
                 );
               })}
             </div>
 
+            {/* Form step */}
             {step === "form" ? (
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                <div className="grid lg:grid-cols-[1.1fr_.9fr] gap-6">
-                  <div className="bg-white rounded-2xl border border-gray-200 p-7 space-y-5">
-                    <div>
-                      <Label className="font-semibold text-sm">Job Title *</Label>
-                      <Input
-                        value={form.title}
-                        onChange={(e) => updateForm("title", e.target.value)}
-                        className="mt-1.5 rounded-xl"
-                        placeholder="e.g. Freelance Videographer Needed"
-                        data-testid="input-job-title"
-                      />
-                    </div>
+                <div className="grid lg:grid-cols-[1.1fr_.9fr] gap-5">
+                  <div className="matr-premium-card p-7 space-y-5">
+                    {[
+                      { label: "Job Title *", key: "title", placeholder: "e.g. Freelance Videographer Needed", testid: "input-job-title" },
+                      { label: "Company / Organization *", key: "company", placeholder: "Your company name", testid: "input-company" },
+                      { label: "Contact Email *", key: "contactEmail", placeholder: "hiring@yourcompany.com", type: "email", testid: "input-contact-email" },
+                      { label: "Compensation (optional)", key: "compensation", placeholder: "e.g. $500-800, negotiable, or TBD", testid: "input-compensation" },
+                    ].map((field) => (
+                      <div key={field.key} className="relative z-10">
+                        <Label className="font-semibold text-[13px] text-[#0a0a0a]">{field.label}</Label>
+                        <Input
+                          value={form[field.key as keyof typeof form]}
+                          onChange={(e) => updateForm(field.key, e.target.value)}
+                          className="mt-1.5 rounded-xl border-black/8 bg-[#f7f6f2] text-[14px]"
+                          placeholder={field.placeholder}
+                          type={field.type}
+                          data-testid={field.testid}
+                        />
+                      </div>
+                    ))}
 
-                    <div>
-                      <Label className="font-semibold text-sm">Company / Organization *</Label>
-                      <Input
-                        value={form.company}
-                        onChange={(e) => updateForm("company", e.target.value)}
-                        className="mt-1.5 rounded-xl"
-                        placeholder="Your company name"
-                        data-testid="input-company"
-                      />
-                    </div>
-
-                    <div>
-                      <Label className="font-semibold text-sm">Category *</Label>
+                    <div className="relative z-10">
+                      <Label className="font-semibold text-[13px] text-[#0a0a0a]">Category *</Label>
                       <Select value={form.category} onValueChange={(value) => updateForm("category", value)}>
-                        <SelectTrigger className="mt-1.5 rounded-xl" data-testid="select-category">
+                        <SelectTrigger className="mt-1.5 rounded-xl border-black/8 bg-[#f7f6f2] text-[14px]" data-testid="select-category">
                           <SelectValue placeholder="Select a category" />
                         </SelectTrigger>
                         <SelectContent>
-                          {CATEGORIES.map((category) => (
-                            <SelectItem key={category} value={category}>{category}</SelectItem>
-                          ))}
+                          {CATEGORIES.map((cat) => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}
                         </SelectContent>
                       </Select>
                     </div>
 
-                    <div>
-                      <Label className="font-semibold text-sm">Job Description *</Label>
+                    <div className="relative z-10 grid grid-cols-2 gap-4">
+                      <div>
+                        <Label className="font-semibold text-[13px] text-[#0a0a0a]">City</Label>
+                        <Input value={form.city} onChange={(e) => updateForm("city", e.target.value)} className="mt-1.5 rounded-xl border-black/8 bg-[#f7f6f2] text-[14px]" data-testid="input-city" />
+                      </div>
+                      <div>
+                        <Label className="font-semibold text-[13px] text-[#0a0a0a]">Province</Label>
+                        <Input value={form.province} onChange={(e) => updateForm("province", e.target.value)} className="mt-1.5 rounded-xl border-black/8 bg-[#f7f6f2] text-[14px]" data-testid="input-province" />
+                      </div>
+                    </div>
+
+                    <div className="relative z-10">
+                      <Label className="font-semibold text-[13px] text-[#0a0a0a]">Job Description *</Label>
                       <Textarea
                         value={form.description}
                         onChange={(e) => updateForm("description", e.target.value)}
-                        className="mt-1.5 rounded-xl min-h-[140px]"
+                        className="mt-1.5 rounded-xl border-black/8 bg-[#f7f6f2] text-[14px] min-h-[130px]"
                         placeholder="Describe the role, requirements, schedule, and what success looks like."
                         data-testid="textarea-description"
                       />
                     </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label className="font-semibold text-sm">City</Label>
-                        <Input value={form.city} onChange={(e) => updateForm("city", e.target.value)} className="mt-1.5 rounded-xl" data-testid="input-city" />
-                      </div>
-                      <div>
-                        <Label className="font-semibold text-sm">Province</Label>
-                        <Input value={form.province} onChange={(e) => updateForm("province", e.target.value)} className="mt-1.5 rounded-xl" data-testid="input-province" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label className="font-semibold text-sm">Compensation (optional)</Label>
-                      <Input
-                        value={form.compensation}
-                        onChange={(e) => updateForm("compensation", e.target.value)}
-                        className="mt-1.5 rounded-xl"
-                        placeholder="e.g. $500-800, negotiable, or TBD"
-                        data-testid="input-compensation"
-                      />
-                    </div>
-
-                    <div>
-                      <Label className="font-semibold text-sm">Contact Email *</Label>
-                      <Input
-                        type="email"
-                        value={form.contactEmail}
-                        onChange={(e) => updateForm("contactEmail", e.target.value)}
-                        className="mt-1.5 rounded-xl"
-                        placeholder="hiring@yourcompany.com"
-                        data-testid="input-contact-email"
-                      />
-                    </div>
                   </div>
 
-                  <div className="space-y-6">
-                    <div className="bg-white rounded-2xl border border-gray-200 p-6">
-                      <h3 className="font-bold text-black mb-4 flex items-center gap-2">
-                        <ClipboardList size={18} className="text-[#E50914]" />
+                  <div className="space-y-4">
+                    <div className="matr-premium-card p-6">
+                      <h3 className="relative z-10 font-black text-[#0a0a0a] text-[16px] mb-4 flex items-center gap-2">
+                        <ClipboardList size={16} className="text-[#E50914]" />
                         Posting Checklist
                       </h3>
-                      <div className="space-y-3 text-sm text-gray-600">
+                      <div className="relative z-10 space-y-3">
                         {[
                           "Name the exact role you are hiring for.",
                           "Describe the schedule, location, and expected responsibilities.",
                           "Include contact information that will be monitored.",
                         ].map((item) => (
-                          <div key={item} className="flex items-start gap-2">
-                            <CheckCircle2 size={16} className="text-[#E50914] mt-0.5" />
-                            <span>{item}</span>
+                          <div key={item} className="flex items-start gap-2.5">
+                            <CheckCircle2 size={14} className="text-[#E50914] mt-0.5 shrink-0" />
+                            <span className="text-[13px] text-gray-600 leading-relaxed">{item}</span>
                           </div>
                         ))}
                       </div>
                     </div>
 
-                    <div className="bg-black rounded-2xl p-6 text-white">
-                      <p className="text-xs uppercase tracking-[0.22em] text-white/45 mb-2">Pricing</p>
-                      <p className="text-3xl font-black mb-2">$100</p>
-                      <p className="text-sm text-white/65 mb-4">
+                    <div className="matr-dark-panel p-6">
+                      <p className="relative z-10 text-[10px] uppercase tracking-[0.22em] text-white/36 mb-2">Pricing</p>
+                      <p className="relative z-10 text-3xl font-black text-white mb-2">$100</p>
+                      <p className="relative z-10 text-[13px] text-white/58 mb-4">
                         Each posting runs for two months and appears on the public MATR job board after checkout.
                       </p>
-                      <p className="text-xs text-white/45">
+                      <p className="relative z-10 text-[11px] text-white/36">
                         You will return to your dashboard after submission so the posting is easy to track.
                       </p>
                     </div>
 
-                    <div className="bg-white rounded-2xl border border-gray-200 p-6">
-                      <h3 className="font-bold text-black mb-4">What a strong listing includes</h3>
-                      <div className="space-y-3 text-sm text-gray-600">
+                    <div className="matr-premium-card p-6">
+                      <h3 className="relative z-10 font-black text-[#0a0a0a] text-[16px] mb-4">What a strong listing includes</h3>
+                      <div className="relative z-10 space-y-3">
                         {[
                           "A specific title creators immediately recognize.",
                           "Enough detail to understand schedule, expectations, and compensation.",
                           "A contact email that is monitored and ready for replies.",
                         ].map((item) => (
-                          <div key={item} className="flex items-start gap-2">
-                            <CheckCircle2 size={16} className="text-[#E50914] mt-0.5" />
-                            <span>{item}</span>
+                          <div key={item} className="flex items-start gap-2.5">
+                            <CheckCircle2 size={14} className="text-[#E50914] mt-0.5 shrink-0" />
+                            <span className="text-[13px] text-gray-600 leading-relaxed">{item}</span>
                           </div>
                         ))}
                       </div>
@@ -276,64 +261,54 @@ export default function PostJobPage() {
 
                 <Button
                   onClick={handleNext}
-                  className="mt-6 w-full h-12 bg-[#E50914] hover:bg-[#b40710] text-white font-bold rounded-xl text-base"
+                  className="mt-5 w-full h-12 bg-[#E50914] hover:bg-[#c8060f] text-white font-bold rounded-full text-[15px] shadow-[0_4px_20px_rgba(229,9,20,0.30)] transition-all"
                   data-testid="button-proceed-to-payment"
                 >
-                  Proceed to Payment - $100
+                  Proceed to Payment — $100
                 </Button>
               </motion.div>
             ) : (
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-white rounded-2xl border border-gray-200 p-6">
-                    <h3 className="font-bold text-black text-lg mb-4">Order Summary</h3>
-                    <div className="space-y-3 border-b border-gray-100 pb-4 mb-4">
-                      <div className="flex justify-between gap-3">
-                        <span className="text-gray-500">Job Posting</span>
-                        <span className="font-semibold text-right">{form.title}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-500">Duration</span>
-                        <span className="font-semibold">2 months</span>
-                      </div>
-                      <div className="flex justify-between gap-3">
-                        <span className="text-gray-500">Company</span>
-                        <span className="font-semibold text-right">{form.company}</span>
-                      </div>
-                      <div className="flex justify-between gap-3">
-                        <span className="text-gray-500">Location</span>
-                        <span className="font-semibold text-right">{form.city}, {form.province}</span>
-                      </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="matr-premium-card p-6">
+                    <h3 className="relative z-10 font-black text-[#0a0a0a] text-[17px] mb-4">Order Summary</h3>
+                    <div className="relative z-10 space-y-3 border-b border-black/5 pb-4 mb-4">
+                      {[
+                        { label: "Job Posting", value: form.title },
+                        { label: "Duration", value: "2 months" },
+                        { label: "Company", value: form.company },
+                        { label: "Location", value: `${form.city}, ${form.province}` },
+                      ].map((row) => (
+                        <div key={row.label} className="flex justify-between gap-3">
+                          <span className="text-gray-400 text-[13px]">{row.label}</span>
+                          <span className="font-medium text-[13px] text-right break-all">{row.value}</span>
+                        </div>
+                      ))}
                     </div>
-                    <div className="flex justify-between font-bold text-xl">
+                    <div className="relative z-10 flex justify-between font-black text-lg">
                       <span>Total</span>
                       <span className="text-[#E50914]">$100.00</span>
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-2xl border border-gray-200 p-6">
-                    <h3 className="font-bold text-black text-lg mb-4">Payment</h3>
-                    <p className="text-gray-500 text-sm mb-5">
+                  <div className="matr-premium-card p-6">
+                    <h3 className="relative z-10 font-black text-[#0a0a0a] text-[17px] mb-3">Payment</h3>
+                    <p className="relative z-10 text-gray-500 text-[13px] mb-6">
                       Complete payment securely with PayPal. Your job will go live immediately after payment and remain attached to your dashboard.
                     </p>
                     <Button
                       onClick={handlePay}
                       disabled={createJob.isPending}
-                      className="w-full h-12 bg-[#0070ba] hover:bg-[#005ea6] text-white font-bold rounded-xl"
+                      className="relative z-10 w-full h-11 bg-[#0070ba] hover:bg-[#005ea6] text-white font-bold rounded-full transition-all"
                       data-testid="button-paypal-job"
                     >
                       {createJob.isPending ? "Processing..." : "Pay $100 with PayPal"}
                     </Button>
-                    <p className="text-xs text-gray-400 text-center mt-3">Sandbox mode</p>
+                    <p className="relative z-10 text-[11px] text-gray-400 text-center mt-3">Sandbox mode</p>
                   </div>
                 </div>
 
-                <Button
-                  variant="outline"
-                  onClick={() => setStep("form")}
-                  className="mt-4 rounded-xl"
-                  data-testid="button-back-form"
-                >
+                <Button variant="outline" onClick={() => setStep("form")} className="mt-4 rounded-full border-black/10 text-gray-700 h-10 px-5" data-testid="button-back-form">
                   Edit Job Details
                 </Button>
               </motion.div>
