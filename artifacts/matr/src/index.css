@@ -262,41 +262,43 @@
   .matr-premium-card {
     position: relative;
     overflow: hidden;
-    border-radius: 1.75rem;
-    border: 1px solid rgba(17,17,17,0.08);
+    border-radius: 1.5rem;
+    border: 1px solid rgba(17,17,17,0.07);
     background:
-      linear-gradient(180deg, rgba(255,255,255,0.98), rgba(245,245,245,0.96)),
+      linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,246,246,0.96)),
       #fff;
     box-shadow:
-      0 18px 50px rgba(15,23,42,0.08),
-      inset 0 1px 0 rgba(255,255,255,0.75);
+      0 12px 40px rgba(15,23,42,0.07),
+      inset 0 1px 0 rgba(255,255,255,0.8);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
   }
   .matr-premium-card::before {
     content: "";
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(circle at top right, rgba(229,9,20,0.08), transparent 28%),
-      linear-gradient(135deg, rgba(17,17,17,0.03), transparent 46%);
+      radial-gradient(circle at top right, rgba(229,9,20,0.06), transparent 28%),
+      linear-gradient(135deg, rgba(17,17,17,0.02), transparent 46%);
     pointer-events: none;
   }
   .matr-dark-panel {
     position: relative;
     overflow: hidden;
-    border-radius: 1.9rem;
-    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255,255,255,0.08);
     background:
-      linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)),
+      linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)),
       #0f0f10;
-    box-shadow: 0 24px 70px rgba(0,0,0,0.28);
+    box-shadow: 0 16px 50px rgba(0,0,0,0.24);
+    transition: box-shadow 0.2s ease;
   }
   .matr-dark-panel::before {
     content: "";
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(circle at top left, rgba(229,9,20,0.18), transparent 22%),
-      linear-gradient(140deg, rgba(255,255,255,0.06), transparent 34%);
+      radial-gradient(circle at top left, rgba(229,9,20,0.14), transparent 22%),
+      linear-gradient(140deg, rgba(255,255,255,0.05), transparent 34%);
     pointer-events: none;
   }
   .matr-chip {

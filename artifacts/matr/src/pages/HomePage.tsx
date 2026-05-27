@@ -115,33 +115,33 @@ export default function HomePage() {
                 </Link>
               </div>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_auto]">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_auto] items-start">
                 <div className="matr-dark-panel p-4">
                   <div className="flex gap-3">
                     <div className="relative flex-1">
-                      <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30" size={18} />
+                      <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30" size={16} />
                       <Input
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search photographers, actors, editors, or keywords"
-                        className="pl-10 h-12 rounded-xl border-white/10 bg-black/30 text-white placeholder:text-white/30"
+                        className="pl-10 h-11 rounded-xl border-white/10 bg-black/30 text-white placeholder:text-white/30 text-sm"
                         data-testid="input-search-talent"
                       />
                     </div>
                     <Link href={`/explore${searchQuery ? `?search=${encodeURIComponent(searchQuery)}` : ""}`}>
                       <Button
                         size="lg"
-                        className="bg-white text-black hover:bg-gray-100 font-semibold h-12 px-6 rounded-xl"
+                        className="bg-white text-black hover:bg-gray-100 font-semibold h-11 px-5 rounded-xl text-sm"
                         data-testid="button-search-submit"
                       >
                         Search
                       </Button>
                     </Link>
                   </div>
-                  <div className="mt-4 flex flex-wrap gap-2">
+                  <div className="mt-3 flex flex-wrap gap-1.5">
                     {TALENT_TYPES.slice(0, 6).map((type) => (
                       <Link key={type} href={`/explore?talentType=${encodeURIComponent(type)}`}>
-                        <span className="inline-flex cursor-pointer rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/72 transition-colors hover:bg-white/10">
+                        <span className="inline-flex cursor-pointer rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/65 transition-colors hover:bg-white/10">
                           {type}
                         </span>
                       </Link>
@@ -149,15 +149,15 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-3 sm:w-[260px]">
+                <div className="grid grid-cols-3 sm:grid-cols-1 gap-2 sm:w-[110px]">
                   {[
-                    { value: "15+", label: "Talent Types" },
-                    { value: "Jobs", label: "Hiring Board" },
-                    { value: "Ads", label: "Brand Reach" },
+                    { value: "15+", label: "Types" },
+                    { value: "Jobs", label: "Board" },
+                    { value: "Ads", label: "Reach" },
                   ].map((stat) => (
-                    <div key={stat.label} className="matr-dark-panel p-4 text-center">
-                      <p className="text-2xl font-black text-white">{stat.value}</p>
-                      <p className="mt-1 text-[11px] uppercase tracking-[0.18em] text-white/35">{stat.label}</p>
+                    <div key={stat.label} className="matr-dark-panel p-3 text-center">
+                      <p className="text-lg font-black text-white leading-tight">{stat.value}</p>
+                      <p className="mt-0.5 text-[10px] uppercase tracking-[0.18em] text-white/35">{stat.label}</p>
                     </div>
                   ))}
                 </div>
@@ -218,7 +218,7 @@ export default function HomePage() {
         </motion.div>
       </section>
 
-      <section className="bg-[#f3f1ed] py-20">
+      <section className="bg-[#f3f1ed] py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
             <div className="max-w-2xl">
@@ -234,7 +234,7 @@ export default function HomePage() {
               </p>
             </div>
             <Link href={isAuthenticated ? "/dashboard" : buildAuthHref("/sign-in", { redirectTo: "/dashboard" })}>
-              <Button variant="outline" className="rounded-xl border-black text-black hover:bg-black hover:text-white">
+              <Button variant="outline" className="rounded-xl border-black text-black hover:bg-black hover:text-white shrink-0">
                 {isAuthenticated ? "View Member Dashboard" : "Sign In for Dashboard"}
               </Button>
             </Link>
